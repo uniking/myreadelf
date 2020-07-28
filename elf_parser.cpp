@@ -183,9 +183,9 @@ void draw_load_view()
     
     printf("elf_header 0x%x 0x%x\n", 0, e->e_ehsize);
     
-    printf("program 0x%x 0x%x\n", e->e_phoff, e->e_phoff + e->e_phnum * e->e_phentsize);
+    printf("program_table 0x%x 0x%x\n", e->e_phoff, e->e_phoff + e->e_phnum * e->e_phentsize);
     
-    printf("segment 0x%x 0x%x\n", e->e_shoff, e->e_shoff + e->e_shnum * e->e_shentsize);
+    printf("segment_table 0x%x 0x%x\n", e->e_shoff, e->e_shoff + e->e_shnum * e->e_shentsize);
     
     Elf32_Shdr* s = get_shdr();
     const char* sh_str = get_sh_str();
@@ -199,12 +199,14 @@ void draw_load_view()
     {
         if(p[i].p_type == PT_LOAD)
         {
-            printf("load%d 0x%x 0x%x\n", i, p[i].p_vaddr, p[i].p_vaddr + p[i].p_filesz);
+            printf("load_off%d 0x%x 0x%x\n", i, p[i].p_offset, p[i].p_offset + p[i].p_filesz);
+            printf("load_vir%d 0x%x 0x%x\n", i, p[i].p_vaddr, p[i].p_vaddr + p[i].p_memsz);
         }
         
-                if(p[i].p_type == PT_DYNAMIC)
+        if(p[i].p_type == PT_DYNAMIC)
         {
-            printf("dynamic_Segment 0x%x 0x%x\n", p[i].p_vaddr, p[i].p_vaddr + p[i].p_filesz);
+            printf("dynamic_Segment_off 0x%x 0x%x\n", p[i].p_offset, p[i].p_offset + p[i].p_filesz);
+            printf("dynamic_Segment_vir 0x%x 0x%x\n", p[i].p_vaddr, p[i].p_vaddr + p[i].p_memsz);
         }
     }
 }

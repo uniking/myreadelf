@@ -7,6 +7,7 @@ img_x=1500
 img_y=800
 white=100
 view_size=0
+line_width=20
 
 def init_view_size(data):
     global view_size
@@ -20,7 +21,7 @@ def transform_line_size(s):
     return int(s/(view_size/(img_x-white)))
 
 def create_img(data):
-    x=img_y#len(data)*25
+    x=(len(data)+3)*line_width #img_y
     y=img_x
     z=3
     img = np.zeros((x, y, z), np.uint8)
@@ -64,7 +65,7 @@ def getData():
 lines = getData()
 init_view_size(lines)
 img = create_img(lines)
-i=10
+i=line_width
 
 for line in lines:
     print(line[0], line[1], line[2])
@@ -72,14 +73,14 @@ for line in lines:
     ly=transform_line_size(int(line[2], 16))
     draw_line(img, (lx,i), (ly,i))
     draw_text(img, line[0], ly+10, i)
-    i=i+20
+    i=i+line_width
 
 #与文件对齐线
 line=lines[0]
 lx=transform_line_size(int(line[1], 16))
 ly=transform_line_size(int(line[2], 16))
 draw_line(img, (ly,0), (ly, i), point_color = (255, 0, 0))
-draw_text(img, 'file align', ly, i+20)
+draw_text(img, 'file align', ly, i+line_width)
 
 #show_img(img)
 cv.imwrite('file_view.png', img)
